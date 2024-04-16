@@ -15,6 +15,18 @@ public class BoardVO {
 	public BoardVO() {
 	}
 
+	
+	
+	public BoardVO(int no, String writer, String title, LocalDate createDate, int hits) {
+		this.no = no;
+		this.writer = writer;
+		this.title = title;
+		this.createDate = createDate;
+		this.hits = hits;
+	}
+
+
+
 	// insert용 생성자
 	public BoardVO(String writer, String title, String content) {
 		this.writer = writer;

@@ -9,35 +9,29 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
-
-
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
 
-    public void contextDestroyed(ServletContextEvent sce)  { 
-    	System.out.println("톰캣 서버 종료됨 . . . ");
-    	// DataSource를 사용하는 코드 작성
-    	// 서버에서 제공하는 DataSource 사용 new를 사용하면 서버가 직접 관리하는 것이 아님 (종속되어버림) 
-    	// BasicDataSource dataSource = new BasicDataSource();
-    	// => 톰캣 서버의 context.xml에 JNDI 방식으로 이름을 작성한 뒤
-    	// 톰캣 서버가 제공하는 DataSource를 사용하는 방식으로 작성해야함
-    	try {
-    		Context context = new InitialContext();
-    		DataSource dataSource = (DataSource)context.lookup("java:/comp/env/jdbc/nextit");
-    		ServletContext servletContext = sce.getServletContext();
-    		servletContext.setAttribute("dataSource", dataSource);
-    		
+	public void contextDestroyed(ServletContextEvent sce) {
+		System.out.println("톰캣 서버 종료됨 . . . ");
+	}
+
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println("톰캣 서버 시작됨 . . . ");
+		// DataSource를 사용하는 코드 작성
+		// 서버에서 제공하는 DataSource 사용 new를 사용하면 서버가 직접 관리하는 것이 아님 (종속되어버림)
+		// BasicDataSource dataSource = new BasicDataSource();
+		// => 톰캣 서버의 context.xml에 JNDI 방식으로 이름을 작성한 뒤
+		// 톰캣 서버가 제공하는 DataSource를 사용하는 방식으로 작성해야함
+		try {
+			Context context = new InitialContext();
+			DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/nextit");
+			ServletContext servletContext = sce.getServletContext();
+			servletContext.setAttribute("dataSource", dataSource);
+
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-    	
-    	
-    }
-	
-    
-    public void contextInitialized(ServletContextEvent sce)  {
-    	System.out.println("톰캣 서버 시작됨 . . . ");
-    }
-	
+	}
+
 }
