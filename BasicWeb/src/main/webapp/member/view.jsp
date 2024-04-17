@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>회원 상세 화면</title>
-</head>
-<body>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="회원 정보 보기" name="title"/>
+</jsp:include>
 <!-- id=a001&name = miso& ... 으로 queryString 구성가능 -->
 <a href = "/member/update?id=${member.id}">수정</a>
 <a href = "javascript:deleteMember();">삭제</a>
@@ -31,6 +27,4 @@
 		}
 	}
 </script>
-
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

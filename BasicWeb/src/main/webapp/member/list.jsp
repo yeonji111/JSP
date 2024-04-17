@@ -1,40 +1,18 @@
+
+<%@page import="board.BoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>회원 목록</title>
-<style>
-form {
-	text-align: right;
-	padding-right: 100px;
-}
-</style>
-</head>
-<body>
-	<header>
-		<c:choose>
-			<c:when test="${not empty member}">			<!-- when = if // not empty member 와 (member != null),(member ne null) 과 동일 -->
-				<form action="/logout" method="get">
-					<span id="loginName">${member.name}님 환영합니다 </span>
-					<button type="submit">로그아웃</button>
-				</form>
-			</c:when>
-			
-			<c:otherwise>	<!-- otherwise = else -->
-				<form action="/login" method="get">
-					<button type="submit">로그인</button>
-				</form>
-			</c:otherwise>
-		</c:choose>
-
-
-
-
-	</header>
-
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="회원 목록" name="title"/>
+</jsp:include>
+<%
+	BoardVO board1 = new BoardVO();
+	board1.setTitle("첫번째 글");
+%>
+<!-- jsp:useBean을 사용하여 new BoardVO처럼 새 BoardVO 객체를 만들고 setProperty를 사용여 값을 넣기 -->
+	<jsp:useBean id="board" class="board.BoardVO" scope="request"></jsp:useBean>
+	<jsp:setProperty property="title" name="board" value="첫번째 글"/>
 	<h1>회원 목록</h1>
 	<a href="/member/add"> 신규 회원 </a>
 	<table>
@@ -54,5 +32,4 @@ form {
 			</tr>
 		</c:forEach>
 	</table>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

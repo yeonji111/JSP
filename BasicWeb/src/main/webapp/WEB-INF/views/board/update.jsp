@@ -33,7 +33,4 @@
 	<button type="button">취소</button>
 </form>
 </c:forEach>
-
-
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
