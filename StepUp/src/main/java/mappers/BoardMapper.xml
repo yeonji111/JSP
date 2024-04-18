@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member.MemberDAO">
+  <select id="getBoardList">
+ select
+				a.no,
+				b.name writer,
+				a.title,
+				a.create_date,
+				a.hits
+from
+				board a
+				inner join member b on a.writer = b.id
+			order by a.create_date desc
+  </select>
+  
+  <select id="getBoard">
+  select
+						a.no,
+						b.name writer,
+						a.title,
+						a.content,
+						a.create_date,
+						a.modify_date,
+						a.hits
+					from
+						board a
+						inner join member b on a.writer = b.id
+					where
+    					no = ?
+  </select>
+  
+  <insert id="insertMember">
+  insert into board (writer, title, content) values (#{writer}, #{title}, #{content})
+  </insert>
+  
+  <update id="updateMember">
+  update board set title = #{title}, content = #{content}, modify_date = sysdate where no = #{no}
+  </update>
+  
+  <delete id="deleteMember">
+  delete from board where no = #{no}
+  </delete>
+  
+</mapper>
