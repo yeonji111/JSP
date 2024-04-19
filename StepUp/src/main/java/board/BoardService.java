@@ -2,26 +2,28 @@ package board;
 
 import java.util.List;
 
-import javax.sql.DataSource;
+import org.apache.ibatis.session.SqlSession;
+
+import common.SearchVO;
 
 public class BoardService {
-	BoardDAO dao;
-	public BoardService(DataSource dataSource) {
-		this.dao = new BoardDAO(dataSource); 
+	private final BoardMapper mapper;
+	public BoardService(SqlSession session) {
+		this.mapper = session.getMapper(BoardMapper.class);
 	}
-	public List<BoardVO> getBoardList() {
-		return dao.getBoardList();
+	public List<BoardVO> getBoardList(SearchVO vo) {
+		return mapper.getBoardList(vo);
 	}
 	public BoardVO getBoard(int searchNo) {
-		return dao.getBoard(searchNo);
+		return mapper.getBoard(searchNo);
 	}
 	public int insertBoard(BoardVO vo) {
-		return dao.insertBoard(vo);
+		return mapper.insertBoard(vo);
 	}
 	public int updateBoard(BoardVO vo) {
-		return dao.updateBoard(vo);
+		return mapper.updateBoard(vo);
 	}
 	public int deleteBoard(int deleteNo) {
-		return dao.deleteBoard(deleteNo);
+		return mapper.deleteBoard(deleteNo);
 	}
 }

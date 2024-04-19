@@ -25,16 +25,20 @@ import org.apache.ibatis.session.SqlSession;
 @WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private MemberService service;
+	
+	@Override
+	public void init() throws ServletException {
+		ServletContext servletContext = getServletContext();
+		SqlSession session = (SqlSession) servletContext.getAttribute("sqlSession");
+		this.service = new MemberService(session);
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext servletContext = request.getServletContext();
-		SqlSession session = (SqlSession) servletContext.getAttribute("sqlSession");
-		MemberService service = new MemberService(session);
 		List<MemberVO> list = service.getMemberList();
 		// request에 회원목록 데이터를 보관한다.
 		request.setAttribute("members", list);
 		request.getRequestDispatcher("/WEB-INF/views/member/list.jsp").forward(request, response);
-	
 	}
 
 }

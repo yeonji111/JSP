@@ -9,7 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+
+import common.SearchVO;
 
 // Controller 역할을 한다.
 @WebServlet("/board/list")
@@ -19,12 +22,15 @@ public class ListServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		ServletContext context = getServletContext();
-		DataSource dataSource = (DataSource) context.getAttribute("dataSource");
-		service = new BoardService(dataSource);
+        ServletContext context = getServletContext();
+        SqlSession sqlSession = (SqlSession) context.getAttribute("sqlSession");
+        service = new BoardService(sqlSession);
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<BoardVO> list = service.getBoardList();
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		List<BoardVO> list = service.getBoardList(new SearchVO(searchType,searchWord));
 		request.setAttribute("boards", list);
 		request.getRequestDispatcher("/WEB-INF/views/board/list.jsp").forward(request, response);
 	}
