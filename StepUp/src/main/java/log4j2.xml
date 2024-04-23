@@ -7,6 +7,8 @@
     </Console>
   </Appenders>
 
+
+
   <Loggers>
     <Logger name="board" level="trace"/>
     <Logger name="member" level="trace"/>
