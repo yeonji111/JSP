@@ -4,13 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import board.BoardMapper;
+import common.SearchVO;
 
 public class MemberService {
 	private final MemberMapper mapper;
 	public MemberService(SqlSession session) {
 		this.mapper = session.getMapper(MemberMapper.class);
 	}
+	public int getMemberListCount(SearchVO ) {
+		return mapper.getMemberListCount(vo);
+	}
+	
 	public List<MemberVO> getMemberList() {
 		return mapper.getMemberList();
 	}

@@ -3,7 +3,7 @@
 <mapper namespace="board.BoardMapper">
 	<select id="getBoardListCount" parameterType="searchVO" resultType="int">
 		select
-			count(*) as cnt
+			count(*) cnt
 		from
 			board a
 			inner join member b on a.writer = b.id
@@ -11,52 +11,50 @@
 			<if test="searchType == 'title'">
 				title like '%' || #{searchWord} || '%'
 			</if>
-			<if test ="searchType == 'content'">
+			<if test="searchType == 'content'">
 				content like '%' || #{searchWord} || '%'
 			</if>
-			<if test ="searchType == 'writer'">
+			<if test="searchType == 'writer'">
 				b.name like '%' || #{searchWord} || '%'
 			</if>
 		</where>
-		order by a.create_date desc
-		
 	</select>
-		
-	
 	<select id="getBoardList" parameterType="searchVO" resultType="boardVO">
-	select 
-		*
-	from
-		(
-		
 		select
-			rownum rnum,
-			a.no,
-			b.name writer,
-			a.title,
-			a.create_date,
-			a.hits
+			*
 		from
-			board a
-			inner join member b on a.writer = b.id
-		<where>
-			<if test="searchType == 'title'">
-				title like '%' || #{searchWord} || '%'
-			</if>
-			<if test ="searchType == 'content'">
-				content like '%' || #{searchWord} || '%'
-			</if>
-			<if test ="searchType == 'writer'">
-				b.name like '%' || #{searchWord} || '%'
-			</if>
-		</where>
+		(
+			select
+				rownum rnum,
+				c.*
+			from
+			(					
+				select
+					a.no,
+					b.name writer,
+					a.title,
+					a.create_date,
+					a.hits
+				from
+					board a
+					inner join member b on a.writer = b.id
+				<where>
+					<if test="searchType == 'title'">
+						title like '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'content'">
+						content like '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'writer'">
+						b.name like '%' || #{searchWord} || '%'
+					</if>
+				</where>
+				order by a.create_date desc
+			) c
 		)
-	where rnum between #{firstRecordIndex} and #{lastRecordIndex}
-	order by create_date desc
-		
+		where rnum between #{firstRecordIndex} + 1 and #{lastRecordIndex}
+
 	</select>
-	
-	
 	<select id="getBoard" parameterType="int" resultType="boardVO">
 		select
 			a.no,
@@ -72,7 +70,6 @@
 		where
  			no = #{no}
 	</select>
-	
 	<insert id="insertBoard" parameterType="boardVO">
 		insert into board
 			(writer, title, content)
